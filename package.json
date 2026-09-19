@@ -1,7 +1,7 @@
 {
   "name": "fylio",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.19.2",
     "@react-navigation/native": "^7.4.1",
@@ -15,6 +15,7 @@
     "expo-document-picker": "^57.0.2",
     "expo-file-system": "^57.0.7",
     "expo-image-picker": "^57.0.19",
+    "expo-linking": "^57.0.10",
     "expo-localization": "^57.0.2",
     "expo-media-library": "^57.0.5",
     "expo-router": "^57.0.22",
@@ -27,7 +28,9 @@
     "qrcode.react": "^4.2.0",
     "react": "19.2.3",
     "react-native": "0.86.3",
+    "react-native-gesture-handler": "^3.3.0",
     "react-native-qrcode-svg": "^6.3.24",
+    "react-native-reanimated": "^4.7.0",
     "react-native-safe-area-context": "^5.10.0",
     "react-native-screens": "^4.28.0",
     "react-native-svg": "^15.15.5",

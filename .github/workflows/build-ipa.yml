@@ -1,0 +1,56 @@
+name: Build Fylio IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+jobs:
+  build-ipa:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prebuild iOS (expo prebuild)
+        run: npx expo prebuild --platform ios --no-install
+
+      - name: Install CocoaPods dependencies
+        run: |
+          cd ios
+          pod install --repo-update
+
+      - name: Build unsigned IPA (xcodebuild archive + export)
+        run: |
+          cd ios
+          xcodebuild -workspace Fylio.xcworkspace \
+            -scheme Fylio \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/Fylio.xcarchive \
+            archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+
+          mkdir -p ../build
+          cd build
+          mkdir -p Payload
+          cp -r Fylio.xcarchive/Products/Applications/*.app Payload/
+          zip -r ../Fylio-unsigned.ipa Payload
+          cd ..
+          cp Fylio-unsigned.ipa ../Fylio-unsigned.ipa
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Fylio-unsigned-ipa
+          path: Fylio-unsigned.ipa
+          retention-days: 90
