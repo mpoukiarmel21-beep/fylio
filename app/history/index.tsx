@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import { colors, spacing, radius, typography, shadow } from '@/src/theme';
 
-const characterEmpty = require('@/assets/images/characters/empty-history.png');
+const characterEmpty = require('@/assets/images/characters/historique-vide.png');
 
 // TODO Phase 2 : données réelles depuis SQLite (historique des transferts)
 const mockHistory: { id: string; name: string; size: string; date: string; device: string; direction: 'sent' | 'received' }[] = [];

@@ -20,7 +20,7 @@ import {
 import { useRouter } from 'expo-router';
 import { colors, spacing, radius, typography, shadow } from '@/src/theme';
 
-const characterEmpty = require('@/assets/images/characters/personage2.png');
+const characterEmpty = require('@/assets/images/characters/accueil-appareils-vide.png');
 const iconAndroid = require('@/assets/images/icons/device-android.png');
 const iconComputer = require('@/assets/images/icons/device-computer.png');
 const iconIphone = require('@/assets/images/icons/device-iphone.png');

@@ -20,7 +20,7 @@ import {
 import { useRouter } from 'expo-router';
 import { colors, spacing, radius, typography, shadow } from '@/src/theme';
 
-const characterTop = require('@/assets/images/characters/personage5.png');
+const characterTop = require('@/assets/images/characters/fichiers-haut.png');
 
 const categories = [
   { id: 'gallery', title: 'Galerie', icon: '🖼️', route: '/gallery' },

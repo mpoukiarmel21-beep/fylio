@@ -24,9 +24,9 @@ import { colors, spacing, radius, typography } from '@/src/theme';
 // Type compatible avec les deux versions de l'API MediaLibrary
 type MediaAsset = { id: string; uri: string };
 
-const characterLeft = require('@/assets/images/characters/personage1.png');
-const characterRight = require('@/assets/images/characters/personage2.png');
-const characterEmpty = require('@/assets/images/characters/personage3.png');
+const characterLeft = require('@/assets/images/characters/galerie-gauche.png');
+const characterRight = require('@/assets/images/characters/galerie-droite.png');
+const characterEmpty = require('@/assets/images/characters/galerie-vide.png');
 
 const { width } = Dimensions.get('window');
 const ITEM_SIZE = (width - spacing.md * 3) / 3;

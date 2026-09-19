@@ -21,8 +21,8 @@ import {
 } from 'react-native';
 import { colors, spacing, radius, typography, shadow } from '@/src/theme';
 
-const characterTop = require('@/assets/images/characters/personage4.png');
-const characterEmpty = require('@/assets/images/characters/personage5.png');
+const characterTop = require('@/assets/images/characters/musique-haut.png');
+const characterEmpty = require('@/assets/images/characters/musique-vide.png');
 
 // TODO Phase 5 : lecteur audio réel avec expo-av
 const mockPlaylists = [
