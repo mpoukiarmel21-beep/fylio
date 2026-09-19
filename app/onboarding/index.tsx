@@ -15,7 +15,8 @@ import {
 import { useRouter } from 'expo-router';
 import { colors, spacing, radius, typography } from '@/src/theme';
 
-const characterHero = require('@/assets/images/characters/personage1.png');
+// Élément 4 : personnage en grand plan dès l'ouverture (maquette accueil)
+const characterHero = require('@/assets/images/characters/splash-hero.png');
 
 export default function WelcomeScreen() {
   const router = useRouter();

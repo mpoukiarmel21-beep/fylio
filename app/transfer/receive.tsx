@@ -20,8 +20,8 @@ import { useRouter } from 'expo-router';
 import QRCode from 'react-native-qrcode-svg';
 import { colors, spacing, radius, typography } from '@/src/theme';
 
-const characterTop = require('@/assets/images/characters/personage3.png');
-const characterBottom = require('@/assets/images/characters/personage4.png');
+// Personnage spécifique QR code (élément 2 maquette QR) — en haut ET en bas
+const characterQR = require('@/assets/images/characters/qr-code.png');
 
 export default function ReceiveScreen() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function ReceiveScreen() {
         <Text style={styles.backText}>← Retour</Text>
       </TouchableOpacity>
 
-      <Image source={characterTop} style={styles.characterTop} resizeMode="contain" />
+      <Image source={characterQR} style={styles.characterTop} resizeMode="contain" />
 
       <View style={styles.qrCard}>
         <Text style={styles.deviceName}>iPhone d'Armel</Text>
@@ -51,7 +51,7 @@ export default function ReceiveScreen() {
         <Text style={styles.waitingText}>En attente d'une connexion...</Text>
       </View>
 
-      <Image source={characterBottom} style={styles.characterBottom} resizeMode="contain" />
+      <Image source={characterQR} style={styles.characterBottom} resizeMode="contain" />
     </View>
   );
 }

@@ -24,10 +24,10 @@ import {
 import { useRouter } from 'expo-router';
 import { colors, spacing, radius, typography, shadow } from '@/src/theme';
 
-// Ressources personnages (depuis D:\FYLIO)
-const characterMain = require('@/assets/images/characters/personage1.png');
-const characterEmptyDevices = require('@/assets/images/characters/personage2.png');
-const characterEmptyHistory = require('@/assets/images/characters/empty-history.png');
+// Personnages page d'accueil (selon maquette INSTRUCTION.txt)
+const characterMain = require('@/assets/images/characters/accueil-principal.png');
+const characterEmptyDevices = require('@/assets/images/characters/accueil-appareils-vide.png');
+const characterEmptyHistory = require('@/assets/images/characters/accueil-historique-vide.png');
 
 // Icônes appareils (éléments 5/6/7)
 const iconAndroid = require('@/assets/images/icons/device-android.png');
