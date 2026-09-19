@@ -33,7 +33,7 @@ jobs:
       - name: Build unsigned IPA
         run: |
           cd ios
-          xcodebuild -workspace *.xcworkspace \
+          xcodebuild -workspace Fylio.xcworkspace \
             -scheme Fylio \
             -configuration Release \
             -sdk iphoneos \
