@@ -22,12 +22,19 @@ import {
 import { useRouter } from 'expo-router';
 import { colors, spacing, radius, typography } from '@/src/theme';
 
-// Objets animés (éléments 1-11 de la maquette transfert)
-const movingObjects = [
+// Animation 11 frames (personnage qui avance selon la progression)
+const animationFrames = [
   require('@/assets/images/animations/object-1.png'),
   require('@/assets/images/animations/object-2.png'),
   require('@/assets/images/animations/object-3.png'),
   require('@/assets/images/animations/object-4.png'),
+  require('@/assets/images/animations/object-5.png'),
+  require('@/assets/images/animations/object-6.png'),
+  require('@/assets/images/animations/object-7.png'),
+  require('@/assets/images/animations/object-8.png'),
+  require('@/assets/images/animations/object-9.png'),
+  require('@/assets/images/animations/object-10.png'),
+  require('@/assets/images/animations/object-11.png'),
 ];
 
 const iconIphone = require('@/assets/images/icons/device-iphone.png');
@@ -38,9 +45,9 @@ export default function ProgressScreen() {
   const [progress, setProgress] = useState(0.35);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Objet animé choisi aléatoirement mais cohérent pendant le transfert
-  const objectIndex = useMemo(() => Math.floor(Math.random() * movingObjects.length), []);
-  const movingObject = movingObjects[objectIndex];
+  // Frame animé calculé selon la progression (11 frames → index 0-10)
+  const frameIndex = Math.min(10, Math.floor(progress * 10));
+  const movingObject = animationFrames[frameIndex];
 
   // Animation de l'objet qui suit la barre
   const objectPosition = useRef(new Animated.Value(0)).current;
