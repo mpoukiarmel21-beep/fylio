@@ -28,12 +28,22 @@ jobs:
           rm -rf ios
 
       - name: Expo prebuild iOS (génère ios/ + installe les pods)
-        run: npx expo prebuild --platform ios --clean
+        run: npx expo prebuild --platform ios --clean --no-install
+
+      - name: Install CocoaPods
+        run: |
+          cd ios
+          pod install --repo-update
+
+      - name: List generated files (debug)
+        run: ls -la ios/ | head -20
 
       - name: Build unsigned IPA
         run: |
           cd ios
-          xcodebuild -workspace Fylio.xcworkspace \
+          WORKSPACE=$(ls -d *.xcworkspace | head -1)
+          echo "Workspace trouvé: $WORKSPACE"
+          xcodebuild -workspace "$WORKSPACE" \
             -scheme Fylio \
             -configuration Release \
             -sdk iphoneos \
