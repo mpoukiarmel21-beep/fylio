@@ -1,13 +1,22 @@
 {
   "expo": {
-    "name": "fylio",
+    "name": "Fylio",
     "slug": "fylio",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.fylio.app",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Fylio accède à vos photos pour les transférer et les afficher dans la galerie.",
+        "NSPhotoLibraryAddUsageDescription": "Fylio enregistre les fichiers reçus dans votre galerie.",
+        "NSLocalNetworkUsageDescription": "Fylio découvre les appareils sur votre réseau Wi-Fi pour transférer des fichiers.",
+        "NSBonjourServices": [
+          "_fylio._tcp"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,6 +29,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

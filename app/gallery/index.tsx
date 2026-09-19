@@ -12,10 +12,12 @@ import {
   View,
   Text,
   Image,
+  TouchableOpacity,
   FlatList,
   StyleSheet,
   Dimensions,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import * as MediaLibrary from 'expo-media-library';
 import { colors, spacing, radius, typography } from '@/src/theme';
 
@@ -30,6 +32,7 @@ const { width } = Dimensions.get('window');
 const ITEM_SIZE = (width - spacing.md * 3) / 3;
 
 export default function GalleryScreen() {
+  const router = useRouter();
   const [photos, setPhotos] = useState<MediaAsset[]>([]);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
@@ -49,11 +52,21 @@ export default function GalleryScreen() {
   }, []);
 
   const renderPhoto = ({ item }: { item: MediaAsset }) => (
-    <Image
-      source={{ uri: item.uri }}
-      style={styles.photoItem}
-      resizeMode="cover"
-    />
+    <TouchableOpacity
+      onPress={() => {
+        // Ouvre le lecteur réel : vidéo pour les vidéos, PDF/image pour le reste
+        router.push({
+          pathname: '/video/[uri]',
+          params: { uri: item.uri, title: item.id },
+        });
+      }}
+    >
+      <Image
+        source={{ uri: item.uri }}
+        style={styles.photoItem}
+        resizeMode="cover"
+      />
+    </TouchableOpacity>
   );
 
   return (
