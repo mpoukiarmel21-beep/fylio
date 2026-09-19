@@ -21,13 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Prebuild iOS (expo prebuild)
-        run: npx expo prebuild --platform ios --no-install
-
-      - name: Install CocoaPods dependencies
-        run: |
-          cd ios
-          pod install --repo-update
+      - name: Prebuild iOS (expo prebuild — installe aussi les pods)
+        run: npx expo prebuild --platform ios --no-install && cd ios && pod install --repo-update
 
       - name: Build unsigned IPA (xcodebuild archive + export)
         run: |
