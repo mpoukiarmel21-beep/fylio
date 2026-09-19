@@ -8,6 +8,8 @@ on:
 jobs:
   build-ipa:
     runs-on: macos-latest
+    env:
+      CI: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,13 +23,17 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Prebuild iOS (expo prebuild — installe aussi les pods)
-        run: npx expo prebuild --platform ios --no-install && cd ios && pod install --repo-update
+      - name: Clean previous prebuild
+        run: |
+          rm -rf ios
 
-      - name: Build unsigned IPA (xcodebuild archive + export)
+      - name: Expo prebuild iOS (génère ios/ + installe les pods)
+        run: npx expo prebuild --platform ios --clean
+
+      - name: Build unsigned IPA
         run: |
           cd ios
-          xcodebuild -workspace Fylio.xcworkspace \
+          xcodebuild -workspace *.xcworkspace \
             -scheme Fylio \
             -configuration Release \
             -sdk iphoneos \
@@ -35,13 +41,10 @@ jobs:
             -archivePath build/Fylio.xcarchive \
             archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
 
-          mkdir -p ../build
           cd build
           mkdir -p Payload
           cp -r Fylio.xcarchive/Products/Applications/*.app Payload/
-          zip -r ../Fylio-unsigned.ipa Payload
-          cd ..
-          cp Fylio-unsigned.ipa ../Fylio-unsigned.ipa
+          zip -r ../../Fylio-unsigned.ipa Payload
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
