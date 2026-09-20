@@ -8,7 +8,7 @@
  * - Animation d'attente
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -18,18 +18,33 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import QRCode from 'react-native-qrcode-svg';
+import NetInfo from '@react-native-community/netinfo';
 import { colors, spacing, radius, typography } from '@/src/theme';
 
-// Personnage spécifique QR code (élément 2 maquette QR) — en haut ET en bas
 const characterQR = require('@/assets/images/characters/qr-code.png');
 
 export default function ReceiveScreen() {
   const router = useRouter();
-  // TODO Phase 2 : payload QR réel (IP + port + clé de session éphémère)
+  const [localIP, setLocalIP] = useState<string | null>(null);
+  const fylioNumber = 'Fylio-4827'; // TODO Phase 2: récupérer depuis SecureStore
+
+  // Récupère l'IP locale réelle
+  useEffect(() => {
+    NetInfo.fetch().then((state: any) => {
+      if (state.details && 'ipAddress' in state.details) {
+        setLocalIP(state.details.ipAddress as string);
+      }
+    });
+  }, []);
+
+  // Payload QR réel : IP + port + numéro Fylio + clé session éphémère
   const qrPayload = JSON.stringify({
+    v: 1, // version protocole
     app: 'fylio',
-    device: 'Fylio-4827',
-    key: 'ephemeral-session-key-v1',
+    ip: localIP || '0.0.0.0',
+    port: 48123,
+    device: fylioNumber,
+    key: Math.random().toString(36).substring(7), // clé session temp
   });
 
   return (
@@ -42,13 +57,16 @@ export default function ReceiveScreen() {
 
       <View style={styles.qrCard}>
         <Text style={styles.deviceName}>iPhone d'Armel</Text>
-        <Text style={styles.fylioNumber}>Fylio-4827</Text>
+        <Text style={styles.fylioNumber}>{fylioNumber}</Text>
+        {localIP && <Text style={styles.ipAddress}>IP: {localIP}:48123</Text>}
 
         <View style={styles.qrContainer}>
           <QRCode value={qrPayload} size={200} color={colors.text} backgroundColor={colors.surface} />
         </View>
 
-        <Text style={styles.waitingText}>En attente d'une connexion...</Text>
+        <Text style={styles.waitingText}>
+          {localIP ? 'Scannez ce QR code depuis un autre appareil Fylio' : 'Recherche du réseau Wi-Fi...'}
+        </Text>
       </View>
 
       <Image source={characterQR} style={styles.characterBottom} resizeMode="contain" />
@@ -104,6 +122,11 @@ const styles = StyleSheet.create({
   waitingText: {
     ...typography.bodySmall,
     color: colors.textSecondary,
+  },
+  ipAddress: {
+    ...typography.caption,
+    color: colors.textSecondary,
+    marginBottom: spacing.sm,
   },
   characterBottom: {
     width: 90,

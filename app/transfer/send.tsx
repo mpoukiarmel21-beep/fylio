@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
 import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
 import { colors, spacing, radius, typography } from '@/src/theme';
 
 export default function SendScreen() {
@@ -33,11 +34,31 @@ export default function SendScreen() {
     }
   };
 
+  // Sélection multiple de photos/vidéos de la galerie
   const pickPhotos = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();
     if (status === 'granted') {
-      // TODO Phase 2 : sélection multiple photos/vidéos depuis la galerie
-      router.push('/transfer/progress');
+      const picker = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images', 'videos'],
+        allowsMultipleSelection: true,
+        quality: 1,
+      });
+      if (!picker.canceled && picker.assets) {
+        const uris = picker.assets.map((a) => a.uri);
+        setSelectedFiles((prev) => [...prev, ...uris]);
+      }
+    }
+  };
+
+  const pickMusic = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'audio/*',
+      multiple: true,
+      copyToCacheDirectory: true,
+    });
+    if (!result.canceled && result.assets) {
+      const uris = result.assets.map((a) => a.uri);
+      setSelectedFiles((prev) => [...prev, ...uris]);
     }
   };
 
@@ -62,7 +83,7 @@ export default function SendScreen() {
           <Text style={styles.sourceLabel}>Fichiers</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sourceButton}>
+        <TouchableOpacity style={styles.sourceButton} onPress={pickMusic}>
           <Text style={styles.sourceIcon}>🎵</Text>
           <Text style={styles.sourceLabel}>Musique</Text>
         </TouchableOpacity>

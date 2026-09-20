@@ -119,6 +119,26 @@ export default function ProgressScreen() {
           <Text style={[styles.controlText, { color: colors.textOnPrimary }]}>✕ Annuler</Text>
         </TouchableOpacity>
       </View>
+    {/* Contrôles transfert : pause / annuler */}
+      <View style={styles.controls}>
+        <TouchableOpacity
+          style={[styles.controlButton, { backgroundColor: colors.surface }]}
+          onPress={() => setIsPaused(!isPaused)}
+        >
+          <Text style={[styles.controlText, { color: colors.text }]}>
+            {isPaused ? '▶ Reprendre' : '⏸ Pause'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.controlButton, { backgroundColor: colors.error }]}
+          onPress={() => router.back()}
+        >
+          <Text style={[styles.controlText, { color: colors.textOnPrimary }]}>
+            ✕ Annuler
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -212,5 +232,10 @@ const styles = StyleSheet.create({
   controlText: {
     ...typography.button,
     color: colors.text,
+  },
+  controls: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginTop: spacing.lg,
   },
 });

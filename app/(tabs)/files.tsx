@@ -3,12 +3,11 @@
  * D:\FYLIO\PAGES\Pages Fichers\1-Pages Fichers.png
  *
  * - Personnage en haut (élément 2)
- * - Icônes dossiers des appareils (élément 3)
- * - Catégories : Galerie, Musique, Documents, Téléchargements
- * - Reçus / Envoyés
+ * - Catégories cliquables : Galerie, Musique, Documents
+ * - Affiche les VRAIS fichiers de l'appareil
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -19,6 +18,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, spacing, radius, typography, shadow } from '@/src/theme';
+import { getPhotos, getVideos, getMusic, LocalFile } from '@/src/filesystem/LocalFiles';
 
 const characterTop = require('@/assets/images/characters/fichiers-haut.png');
 
@@ -31,6 +31,18 @@ const categories = [
 
 export default function FilesScreen() {
   const router = useRouter();
+  const [photosCount, setPhotosCount] = useState(0);
+  const [videosCount, setVideosCount] = useState(0);
+  const [musicCount, setMusicCount] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      const [photos, videos, music] = await Promise.all([getPhotos(), getVideos(), getMusic()]);
+      setPhotosCount(photos.length);
+      setVideosCount(videos.length);
+      setMusicCount(music.length);
+    })();
+  }, []);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -50,6 +62,12 @@ export default function FilesScreen() {
           >
             <Text style={styles.categoryIcon}>{cat.icon}</Text>
             <Text style={styles.categoryTitle}>{cat.title}</Text>
+            {cat.id === 'gallery' && (photosCount + videosCount > 0) && (
+              <Text style={styles.categoryCount}>{photosCount + videosCount} fichiers</Text>
+            )}
+            {cat.id === 'music' && musicCount > 0 && (
+              <Text style={styles.categoryCount}>{musicCount} pistes</Text>
+            )}
           </TouchableOpacity>
         ))}
       </View>
@@ -90,6 +108,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingHorizontal: spacing.md,
     gap: spacing.sm,
+  },
+  categoryCount: {
+    ...typography.caption,
+    color: colors.textSecondary,
+    marginTop: 4,
   },
   categoryCard: {
     width: '47%',
